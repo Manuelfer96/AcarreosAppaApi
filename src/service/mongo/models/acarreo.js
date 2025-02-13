@@ -13,5 +13,5 @@ const asignadoSchema = new Schema({
   estado: { type: String },
 });
 
-const Asignado = model("Asignado", asignadoSchema);
-export default Asignado;
+const Acarreo = model("Acarreo", asignadoSchema);
+export default Acarreo;
