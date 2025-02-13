@@ -1,0 +1,10 @@
+const mongoose = require("mongoose");
+
+const informeAcarreoSchema = new mongoose.Schema({
+  informe: { type: mongoose.Schema.Types.ObjectId, ref: "Informe" }, // Referencia a Informe
+  acarreo: { type: mongoose.Schema.Types.ObjectId, ref: "Asignado" }, // Referencia a Asignado
+  detalle: { type: String },
+});
+
+const InformeAcarreo = mongoose.model("InformeAcarreo", informeAcarreoSchema);
+module.exports = InformeAcarreo;
