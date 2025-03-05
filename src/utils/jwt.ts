@@ -1,6 +1,6 @@
 // src/utils/jwt.ts
 import jwt from "jsonwebtoken";
-import settings from "../settings";
+import settings from "../settings_old";
 
 const JWT_SECRET = settings.JWT_SECRET;
 const JWT_EXPIRES_IN = settings.JWT_EXPIRES_IN;

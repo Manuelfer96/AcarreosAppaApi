@@ -1,5 +1,5 @@
 import { connect } from "mongoose";
-import settings from "../../settings";
+import settings from "../../settings_old";
 
 connect(settings.db_mongo_uri)
   .then(() => console.log("Conectado a MongoDB"))
