@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const informeAcarreoSchema = new mongoose.Schema({
   informe: { type: mongoose.Schema.Types.ObjectId, ref: "Informe" }, // Referencia a Informe
