@@ -7,4 +7,4 @@ const informeAcarreoSchema = new mongoose.Schema({
 });
 
 const InformeAcarreo = mongoose.model("InformeAcarreo", informeAcarreoSchema);
-module.exports = InformeAcarreo;
+export default InformeAcarreo;

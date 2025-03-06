@@ -3,6 +3,111 @@ var router = Router();
 import Bison from "../service/mongo/models/bisonte";
 import { addBisonCarer, removeBisonCarer } from "../utils/bisonCarer";
 
+/**
+ * @swagger
+ * /bison:
+ *   post:
+ *     summary: Crear un nuevo bisonte
+ *     tags: [Bisontes]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Bisonte'
+ *     responses:
+ *       201:
+ *         description: Bisonte creado exitosamente
+ *       400:
+ *         description: Error en la solicitud
+ *       500:
+ *         description: Error al crear el bisonte
+ *   get:
+ *     summary: Obtener todos los bisontes
+ *     tags: [Bisontes]
+ *     responses:
+ *       200:
+ *         description: Lista de bisontes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Bisonte'
+ *       500:
+ *         description: Error al obtener los bisontes
+ */
+
+/**
+ * @swagger
+ * /bison/{id}:
+ *   get:
+ *     summary: Obtener un bisonte por ID
+ *     tags: [Bisontes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del bisonte
+ *     responses:
+ *       200:
+ *         description: Bisonte encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Bisonte'
+ *       404:
+ *         description: Bisonte no encontrado
+ *       500:
+ *         description: Error al obtener el bisonte
+ *   put:
+ *     summary: Actualizar un bisonte por ID
+ *     tags: [Bisontes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del bisonte
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Bisonte'
+ *     responses:
+ *       200:
+ *         description: Bisonte actualizado exitosamente
+ *       400:
+ *         description: Error en la solicitud
+ *       404:
+ *         description: Bisonte no encontrado
+ *       500:
+ *         description: Error al actualizar el bisonte
+ *   delete:
+ *     summary: Eliminar un bisonte por ID
+ *     tags: [Bisontes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del bisonte
+ *     responses:
+ *       200:
+ *         description: Bisonte eliminado exitosamente
+ *       404:
+ *         description: Bisonte no encontrado
+ *       500:
+ *         description: Error al eliminar el bisonte
+ */
+
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   const bison = await Bison.find();

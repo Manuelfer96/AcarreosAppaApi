@@ -5,7 +5,109 @@ import { obtenerSiguienteNumAcarreo } from "../utils/contador";
 import Bisonte from "../service/mongo/models/bisonte";
 import Cuidador from "../service/mongo/models/cuidador";
 
-/* GET home page. */
+/**
+ * @swagger
+ * /carer:
+ *   post:
+ *     summary: Crear un nuevo acarreo
+ *     tags: [Acarreos]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Acarreo'
+ *     responses:
+ *       201:
+ *         description: Acarreo creado exitosamente
+ *       400:
+ *         description: Error en la solicitud
+ *       500:
+ *         description: Error al crear el acarreo
+ *   get:
+ *     summary: Obtener todos los acarreos
+ *     tags: [Acarreos]
+ *     responses:
+ *       200:
+ *         description: Lista de acarreos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Acarreo'
+ *       500:
+ *         description: Error al obtener los acarreos
+ */
+
+/**
+ * @swagger
+ * /carer/{id}:
+ *   get:
+ *     summary: Obtener un acarreo por ID
+ *     tags: [Acarreos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del acarreo
+ *     responses:
+ *       200:
+ *         description: Acarreo encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Acarreo'
+ *       404:
+ *         description: Acarreo no encontrado
+ *       500:
+ *         description: Error al obtener el acarreo
+ *   put:
+ *     summary: Actualizar un acarreo por ID
+ *     tags: [Acarreos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del acarreo
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Acarreo'
+ *     responses:
+ *       200:
+ *         description: Acarreo actualizado exitosamente
+ *       400:
+ *         description: Error en la solicitud
+ *       404:
+ *         description: Acarreo no encontrado
+ *       500:
+ *         description: Error al actualizar el acarreo
+ *   delete:
+ *     summary: Eliminar un acarreo por ID
+ *     tags: [Acarreos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del acarreo
+ *     responses:
+ *       200:
+ *         description: Acarreo eliminado exitosamente
+ *       404:
+ *         description: Acarreo no encontrado
+ *       500:
+ *         description: Error al eliminar el acarreo
+ */
+
 router.get("/", async (req, res, next) => {
   const acarreo = await Acarreo.find();
   res.send(acarreo);

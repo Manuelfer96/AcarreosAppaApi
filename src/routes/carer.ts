@@ -7,6 +7,109 @@ import { generarToken } from "../utils/jwt";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import Acarreo from "../service/mongo/models/acarreo";
 
+/**
+ * @swagger
+ * /carer:
+ *   post:
+ *     summary: Crear un nuevo cuidador
+ *     tags: [Cuidadores]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Cuidador'
+ *     responses:
+ *       201:
+ *         description: Cuidador creado exitosamente
+ *       400:
+ *         description: Error en la solicitud
+ *       500:
+ *         description: Error al crear el cuidador
+ *   get:
+ *     summary: Obtener todos los cuidadors
+ *     tags: [Cuidadores]
+ *     responses:
+ *       200:
+ *         description: Lista de cuidadors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cuidador'
+ *       500:
+ *         description: Error al obtener los cuidadors
+ */
+
+/**
+ * @swagger
+ * /carer/{id}:
+ *   get:
+ *     summary: Obtener un cuidador por ID
+ *     tags: [Cuidadores]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del cuidador
+ *     responses:
+ *       200:
+ *         description: Cuidador encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Cuidador'
+ *       404:
+ *         description: Cuidador no encontrado
+ *       500:
+ *         description: Error al obtener el cuidador
+ *   put:
+ *     summary: Actualizar un cuidador por ID
+ *     tags: [Cuidadores]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del cuidador
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Cuidador'
+ *     responses:
+ *       200:
+ *         description: Cuidador actualizado exitosamente
+ *       400:
+ *         description: Error en la solicitud
+ *       404:
+ *         description: Cuidador no encontrado
+ *       500:
+ *         description: Error al actualizar el cuidador
+ *   delete:
+ *     summary: Eliminar un cuidador por ID
+ *     tags: [Cuidadores]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del cuidador
+ *     responses:
+ *       200:
+ *         description: Cuidador eliminado exitosamente
+ *       404:
+ *         description: Cuidador no encontrado
+ *       500:
+ *         description: Error al eliminar el cuidador
+ */
+
 /* GET home page. */
 router.get("/", authMiddleware, async (req, res, next) => {
   const cuidador = await Cuidador.find().select(["-__v", "-contrasena"]);

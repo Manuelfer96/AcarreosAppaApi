@@ -12,8 +12,11 @@ import acarreoRouter from "./routes/acarreo";
 import adminRouter from "./routes/admin";
 
 import { authMiddleware } from "./middlewares/authMiddleware";
+import { swaggerSetup } from "./swagger";
 
 var app = express();
+
+swaggerSetup(app);
 
 const PORT = process.env.PORT || 3000;
 
