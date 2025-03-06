@@ -1,7 +1,10 @@
 import { Router } from "express";
 import Admin from "../service/mongo/models/admin";
 import { generarToken } from "../utils/jwt";
-import { authMiddleware } from "../middlewares/authMiddleware";
+import {
+  authMiddleware,
+  verifyAdminSecret,
+} from "../middlewares/authMiddleware";
 var router = Router();
 
 router.get("/", authMiddleware, async (req, res) => {
@@ -17,7 +20,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
   res.send(admin);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", verifyAdminSecret, async (req, res) => {
   const dataClient = {
     nombre: req.body.nombre,
     correo: req.body.correo,
