@@ -9,6 +9,7 @@ import usersRouter from "./routes/carer";
 import clientsRouter from "./routes/client";
 import bisonRouter from "./routes/bison";
 import acarreoRouter from "./routes/acarreo";
+import adminRouter from "./routes/admin";
 
 import { authMiddleware } from "./middlewares/authMiddleware";
 
@@ -26,6 +27,7 @@ app.use(cors({ origin: "*" }));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/carer", usersRouter);
 app.use("/api/v1/client", clientsRouter);
+app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/bison", authMiddleware, bisonRouter);
 app.use("/api/v1/acarreo", authMiddleware, acarreoRouter);
 
