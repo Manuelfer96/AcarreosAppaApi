@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
-import settings from "../../../settings_old";
+import settings from "../../../settings";
 
 export interface IUsuario extends Document {
   _id: mongoose.Types.ObjectId;
@@ -33,7 +33,7 @@ usuarioSchema.methods.toJSON = function () {
 usuarioSchema.pre<IUsuario>("save", async function (next) {
   if (!this.isModified("contrasena")) return next();
   try {
-    const salt = await bcrypt.genSalt(settings.salt_work_factor);
+    const salt = await bcrypt.genSalt(parseInt(settings.salt_work_factor));
     const hash = await bcrypt.hash(this.contrasena, salt);
     this.contrasena = hash;
     next();
