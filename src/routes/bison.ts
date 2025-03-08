@@ -2,6 +2,7 @@ import { Router } from "express";
 var router = Router();
 import Bison from "../service/mongo/models/bisonte";
 import { addBisonCarer, removeBisonCarer } from "../utils/bisonCarer";
+import Cuidador from "../service/mongo/models/cuidador";
 
 /**
  * @swagger

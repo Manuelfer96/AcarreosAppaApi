@@ -8,7 +8,7 @@ export interface BisonI {
 }
 
 const bisonteSchema = new Schema<BisonI>({
-  nombre: { type: String, required: true },
+  nombre: { type: String, required: true, unique: true },
   peso: { type: Number },
   estado: { type: String, default: "activo" },
   cuidador: { type: Schema.Types.ObjectId, ref: "Cuidador" }, // Referencia a Cuidador
