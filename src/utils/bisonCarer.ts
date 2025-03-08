@@ -10,53 +10,72 @@ interface BisonCarerI {
 export const addBisonCarer = async (
   bisonCarer: BisonCarerI
 ): Promise<BisonI | CuidadorI | null> => {
-  if (bisonCarer.carerId && bisonCarer.bisonId) {
-    const cuidadorRes = await Cuidador.findByIdAndUpdate(
-      bisonCarer.carerId,
-      { bisonte: bisonCarer.bisonId },
-      { new: true }
-    ).select(["-__v", "-contrasena"]);
-    const bison = await Bison.findByIdAndUpdate(
-      bisonCarer.bisonId,
-      { cuidador: bisonCarer.carerId },
-      { new: true }
-    );
-    return bisonCarer.type === "bison" ? bison : cuidadorRes;
-  } else if (bisonCarer.carerId && !bisonCarer.bisonId) {
-    const bison = await Bison.findOneAndUpdate(
-      { cuidador: null },
-      { cuidador: bisonCarer.carerId },
-      { new: true }
-    );
-    if (!bison)
-      return await Cuidador.findById(bisonCarer.carerId).select([
-        "-__v",
-        "-contrasena",
-      ]); // Si no hay bisontes disponibles
+  try {
+    const { carerId, bisonId, type } = bisonCarer;
 
-    const cuidadorRes = await Cuidador.findByIdAndUpdate(
-      bisonCarer.carerId,
-      { bisonte: bison._id },
-      { new: true }
-    ).select(["-__v", "-contrasena"]);
-    return bisonCarer.type === "bison" ? bison : cuidadorRes;
-  } else if (!bisonCarer.carerId && bisonCarer.bisonId) {
-    const carer = await Cuidador.findOneAndUpdate(
-      { bisonte: null },
-      { bisonte: bisonCarer.bisonId },
-      { new: true }
-    ).select(["-__v", "-contrasena"]);
-    const bison = await Bison.findById(bisonCarer.bisonId).select("-__v");
-    if (!carer) return bison; // Si no hay cuidadores disponibles
+    if (carerId && bisonId) {
+      const [cuidadorRes, bison] = await Promise.all([
+        Cuidador.findByIdAndUpdate(carerId, { bisonte: bisonId }, { new: true })
+          .select(["-__v", "-contrasena"])
+          .lean(),
+        Bison.findByIdAndUpdate(
+          bisonId,
+          { cuidador: carerId },
+          { new: true }
+        ).lean(),
+      ]);
+      return type === "bison" ? bison : cuidadorRes;
+    }
 
-    const bisonRes = await Bison.findByIdAndUpdate(
-      bisonCarer.bisonId,
-      { cuidador: carer._id },
-      { new: true }
-    ).select("-__v");
-    return bisonCarer.type === "bison" ? bisonRes : carer;
-  } else {
-    // Caso donde ni carerId ni bisonId están presentes
+    if (carerId) {
+      const bison = await Bison.findOneAndUpdate(
+        { cuidador: null },
+        { cuidador: carerId },
+        { new: true }
+      ).lean();
+
+      if (!bison) {
+        return await Cuidador.findById(carerId)
+          .select(["-__v", "-contrasena"])
+          .lean();
+      }
+
+      const cuidadorRes = await Cuidador.findByIdAndUpdate(
+        carerId,
+        { bisonte: bison._id },
+        { new: true }
+      )
+        .select(["-__v", "-contrasena"])
+        .lean();
+
+      return type === "bison" ? bison : cuidadorRes;
+    }
+
+    if (bisonId) {
+      const carer = await Cuidador.findOneAndUpdate(
+        { bisonte: null },
+        { bisonte: bisonId },
+        { new: true }
+      )
+        .select(["-__v", "-contrasena"])
+        .lean();
+
+      if (!carer) return await Bison.findById(bisonId).select("-__v").lean();
+
+      const bisonRes = await Bison.findByIdAndUpdate(
+        bisonId,
+        { cuidador: carer._id },
+        { new: true }
+      )
+        .select("-__v")
+        .lean();
+
+      return type === "bison" ? bisonRes : carer;
+    }
+
+    return null; // Caso donde ni `carerId` ni `bisonId` están presentes
+  } catch (error) {
+    console.error("Error en addBisonCarer:", error);
     return null;
   }
 };

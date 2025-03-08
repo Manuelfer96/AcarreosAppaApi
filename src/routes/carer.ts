@@ -131,44 +131,34 @@ router.get("/disponible", authMiddleware, async (req, res) => {
   } else {
   }
 });
-
 router.post("/", async (req, res) => {
-  const bisonRep = req.body.bisonte;
-  const dataCuidador = {
-    nombre: req.body.nombre,
-    correo: req.body.correo,
-    telefono: req.body.telefono,
-    contrasena: req.body.contrasena,
-    rol: "cuidador",
-  };
-  const cuidador = new Cuidador(dataCuidador);
+  try {
+    const { bisonte, nombre, correo, telefono, contrasena } = req.body;
 
-  await cuidador
-    .save()
-    .then(async (cuidador) => {
-      // Generar token JWT
-      const token = generarToken({ id: cuidador._id, rol: cuidador.rol });
-      if (bisonRep) {
-        const newCarer = await addBisonCarer({
-          carerId: cuidador._id,
-          bisonId: bisonRep,
-          type: "carer",
-        });
-        res.status(201).json({ token, cuidador: newCarer });
-      } else {
-        const newCarer = await addBisonCarer({
-          carerId: cuidador._id,
-          type: "carer",
-        });
-        res.status(201).json({ token, cuidador: newCarer });
-      }
-    })
-    .catch((err: any) => {
-      console.log(err);
-      res
-        .status(404)
-        .send({ message: "Cuidador no creado", error: err.message });
+    const dataCuidador = {
+      nombre,
+      correo,
+      telefono,
+      contrasena,
+      rol: "cuidador",
+    };
+
+    const cuidador = new Cuidador(dataCuidador);
+    await cuidador.save();
+
+    const token = generarToken({ id: cuidador._id, rol: cuidador.rol });
+
+    const newCarer = await addBisonCarer({
+      carerId: cuidador._id,
+      bisonId: bisonte,
+      type: "carer",
     });
+
+    res.status(201).json({ token, cuidador: newCarer });
+  } catch (err: any) {
+    console.error("Error al crear cuidador:", err);
+    res.status(404).json({ message: "Cuidador no creado", error: err.message });
+  }
 });
 
 router.put("/:id", authMiddleware, async (req, res) => {
