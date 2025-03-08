@@ -125,18 +125,10 @@ router.get("/:id", authMiddleware, async (req, res) => {
 });
 
 router.get("/disponible", authMiddleware, async (req, res) => {
-  const acarreos = await Acarreo.find({ estado: "pendiente" });
-  const cuidadores = acarreos.map((acarreo) => acarreo.cuidador);
-  let cuidador = await Cuidador.findOne({ _id: { $nin: cuidadores } });
-  if (cuidador) {
-    res.status(200).json(cuidador);
+  const cuidadores = await Cuidador.find({ estado: CUIDADOR_DISPONIBLE });
+  if (cuidadores) {
+    res.status(200).json(cuidadores);
   } else {
-    let newCuidador = acarreos.filter(
-      (acarreo) => acarreo.estado != "pendiente"
-    );
-
-    if (newCuidador) {
-    }
   }
 });
 

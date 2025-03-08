@@ -1,6 +1,6 @@
 import { Router } from "express";
 var router = Router();
-import Acarreo from "../service/mongo/models/acarreo";
+import Acarreo, { AcarreoI } from "../service/mongo/models/acarreo";
 import { obtenerSiguienteNumAcarreo } from "../utils/contador";
 import Bisonte from "../service/mongo/models/bisonte";
 import Cuidador from "../service/mongo/models/cuidador";
@@ -174,6 +174,28 @@ router.post("/", async (req, res) => {
       estado,
     } = req.body;
 
+    const direccionActual = direccionOrigen;
+
+    if (
+      capitales.some((x) => x !== direccionOrigen) ||
+      capitales.some((x) => x !== direccionFinal)
+    ) {
+      res.status(400).json({
+        mensaje:
+          "Las direcciones no se encuentran dentro de las capitales activas",
+        error: "Direcciones Incorrectas",
+      });
+      return;
+    }
+
+    if (direccionOrigen === direccionFinal) {
+      res.status(400).json({
+        mensaje: "No se puede enviar al mismo destino",
+        error: "Dirección origen es igual a la dirección final",
+      });
+      return;
+    }
+
     // Crear un nuevo documento de Asignado
     const nuevoAcarreo = new Acarreo({
       numAcarreo,
@@ -183,16 +205,17 @@ router.post("/", async (req, res) => {
       fechaEntrega,
       direccionOrigen,
       direccionFinal,
+      direccionActual,
       peso,
       costoTotal,
-      estado: estado || "pendiente",
+      estado: estado || ACARREO_PENDIENTE,
     });
 
     // Guardar el nuevo acarreo en la base de datos
     const acarreoGuardado = await nuevoAcarreo.save();
     await Cuidador.findByIdAndUpdate(
       cuidador,
-      { estado: "ocupado" },
+      { estado: CUIDADOR_OCUPADO },
       { new: true }
     );
     // Responder con el acarreo creado
@@ -207,7 +230,17 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const dataAcarreo = req.body;
+  const dataAcarreo: Partial<AcarreoI> = req.body;
+  if (dataAcarreo.direccionActual) {
+    if (!verifyCapital(dataAcarreo.direccionActual)) {
+      res.status(400).json({
+        mensaje:
+          "Las direccion no se encuentra dentro de las capitales activas",
+        error: "Direccion Incorrecta",
+      });
+      return;
+    }
+  }
   const acarreo = await Acarreo.findByIdAndUpdate(req.params.id, dataAcarreo, {
     new: true,
   });
@@ -218,5 +251,9 @@ router.delete("/:id", async (req, res) => {
   await Acarreo.findByIdAndDelete(req.params.id);
   res.send("Acarreo eliminado");
 });
+
+const verifyCapital = (capital: string) => {
+  return capitales.some((x) => x === capital);
+};
 
 export default router;

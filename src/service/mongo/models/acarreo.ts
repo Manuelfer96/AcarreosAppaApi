@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from "mongoose";
 
-interface AcarreoI extends mongoose.Document {
+export interface AcarreoI extends mongoose.Document {
   numAcarreo: number;
   cliente: Schema.Types.ObjectId;
   cuidador: Schema.Types.ObjectId;
@@ -8,6 +8,7 @@ interface AcarreoI extends mongoose.Document {
   fechaEntrega: Date;
   direccionOrigen: string;
   direccionFinal: string;
+  direccionActual: string;
   peso: number;
   costoTotal: number;
   estado: string;
@@ -27,8 +28,10 @@ const asignadoSchema = new mongoose.Schema<AcarreoI>({
   },
   fechaInicio: { type: Date, required: true },
   fechaEntrega: { type: Date, required: true },
+
   direccionOrigen: { type: String, required: true },
   direccionFinal: { type: String, required: true },
+  direccionActual: { type: String },
   peso: { type: Number, required: true },
   costoTotal: { type: Number, required: true },
   estado: { type: String, default: "pendiente" }, // Estado por defecto
