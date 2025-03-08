@@ -140,6 +140,20 @@ router.get("/guia/:numAcarreo", async (req, res) => {
 
 router.get("/acarreo/cuidador/:id", async (req, res) => {
   try {
+    const acarreo = await Acarreo.find({
+      cuidador: req.params.id,
+    });
+    res.status(200).json(acarreo);
+  } catch (error: any) {
+    res.status(500).json({
+      mensaje: "Error con los acarreos del cuidador",
+      error: error.message,
+    });
+  }
+});
+
+router.get("/acarreo/cuidador/:id/pendiente", async (req, res) => {
+  try {
     const acarreo = await Acarreo.findOne({
       cuidador: req.params.id,
       estado: "pendiente",
@@ -148,7 +162,10 @@ router.get("/acarreo/cuidador/:id", async (req, res) => {
   } catch (error: any) {
     res
       .status(500)
-      .json({ mensaje: "Error con la guia", error: error.message });
+      .json({
+        mensaje: "Error con el acarreo pendiente del acarreador",
+        error: error.message,
+      });
   }
 });
 
@@ -175,7 +192,10 @@ router.post("/", async (req, res) => {
     }: Partial<AcarreoI> = req.body;
 
     const direccionActual = direccionOrigen;
-
+    console.log(
+      !capitales.some((x) => x === direccionOrigen),
+      !capitales.some((x) => x === direccionFinal)
+    );
     if (
       !capitales.some((x) => x === direccionOrigen) ||
       !capitales.some((x) => x === direccionFinal)
