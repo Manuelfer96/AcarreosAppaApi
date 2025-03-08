@@ -162,7 +162,6 @@ router.post("/", async (req, res) => {
   try {
     // Extraer los datos del cuerpo de la solicitud
     const numAcarreo = await obtenerSiguienteNumAcarreo();
-    console.log(numAcarreo);
     const {
       cliente,
       cuidador,
@@ -173,13 +172,13 @@ router.post("/", async (req, res) => {
       peso,
       costoTotal,
       estado,
-    } = req.body;
+    }: Partial<AcarreoI> = req.body;
 
     const direccionActual = direccionOrigen;
 
     if (
-      capitales.some((x) => x !== direccionOrigen) ||
-      capitales.some((x) => x !== direccionFinal)
+      !capitales.some((x) => x === direccionOrigen) ||
+      !capitales.some((x) => x === direccionFinal)
     ) {
       res.status(400).json({
         mensaje:
