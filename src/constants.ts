@@ -1,12 +1,12 @@
-const CUIDADOR_DISPONIBLE = "disponible";
-const CUIDADOR_OCUPADO = "ocupado";
-const CUIDADOR_NODISPONBILE = "no_disponible";
+export const CUIDADOR_DISPONIBLE = "disponible";
+export const CUIDADOR_OCUPADO = "ocupado";
+export const CUIDADOR_NODISPONBILE = "no_disponible";
 
-const ACARREO_PENDIENTE = "pendiente";
-const ACARREO_PROCESO = "proceso";
-const ACARREO_ENTREGADO = "entregado";
-const ACARREO_RETRASADO = "retrasado";
-const ACARREO_CANCELADO = "cancelado";
+export const ACARREO_PENDIENTE = "pendiente";
+export const ACARREO_PROCESO = "proceso";
+export const ACARREO_ENTREGADO = "entregado";
+export const ACARREO_RETRASADO = "retrasado";
+export const ACARREO_CANCELADO = "cancelado";
 
 const A = "Firenation Capital";
 const B = "Republic City";
@@ -15,4 +15,4 @@ const D = "Estern Air Temple";
 const E = "Southern AIr Temple";
 const F = "S Wong";
 
-const capitales = [A, B, C, D, E, F];
+export const capitales = [A, B, C, D, E, F];

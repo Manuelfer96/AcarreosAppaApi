@@ -4,6 +4,7 @@ import Acarreo, { AcarreoI } from "../service/mongo/models/acarreo";
 import { obtenerSiguienteNumAcarreo } from "../utils/contador";
 import Bisonte from "../service/mongo/models/bisonte";
 import Cuidador from "../service/mongo/models/cuidador";
+import { ACARREO_PENDIENTE, capitales, CUIDADOR_OCUPADO } from "../constants";
 
 /**
  * @swagger

@@ -6,6 +6,7 @@ import { generarToken } from "../utils/jwt";
 
 import { authMiddleware } from "../middlewares/authMiddleware";
 import Acarreo from "../service/mongo/models/acarreo";
+import { CUIDADOR_DISPONIBLE } from "../constants";
 
 /**
  * @swagger
