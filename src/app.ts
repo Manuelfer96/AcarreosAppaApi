@@ -10,6 +10,7 @@ import clientsRouter from "./routes/client";
 import bisonRouter from "./routes/bison";
 import acarreoRouter from "./routes/acarreo";
 import adminRouter from "./routes/admin";
+import indexRouter from "./routes";
 
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { swaggerSetup } from "./swagger";
@@ -27,6 +28,7 @@ app.use(cookieParser());
 
 app.use(cors({ origin: "*" }));
 
+app.use("/api/v1/", indexRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/carer", usersRouter);
 app.use("/api/v1/client", clientsRouter);
