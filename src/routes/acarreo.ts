@@ -138,7 +138,7 @@ router.get("/guia/:numAcarreo", async (req, res) => {
   }
 });
 
-router.get("/acarreo/cuidador/:id", async (req, res) => {
+router.get("/cuidador/:id", async (req, res) => {
   try {
     const acarreo = await Acarreo.find({
       cuidador: req.params.id,
@@ -152,7 +152,7 @@ router.get("/acarreo/cuidador/:id", async (req, res) => {
   }
 });
 
-router.get("/acarreo/cuidador/:id/pendiente", async (req, res) => {
+router.get("/cuidador/:id/pendiente", async (req, res) => {
   try {
     const acarreo = await Acarreo.findOne({
       cuidador: req.params.id,
@@ -160,12 +160,10 @@ router.get("/acarreo/cuidador/:id/pendiente", async (req, res) => {
     });
     res.status(200).json(acarreo);
   } catch (error: any) {
-    res
-      .status(500)
-      .json({
-        mensaje: "Error con el acarreo pendiente del acarreador",
-        error: error.message,
-      });
+    res.status(500).json({
+      mensaje: "Error con el acarreo pendiente del acarreador",
+      error: error.message,
+    });
   }
 });
 
